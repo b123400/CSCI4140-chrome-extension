@@ -31,6 +31,8 @@ makeContent = (name, type='text')->
 makeFields = ->
   allFields.map makeField
 
+messageArea = null
+
 addForm = (container)->
   makeFields!.forEach container~appendChild
 
@@ -44,12 +46,16 @@ addForm = (container)->
     innerHTML : 'Save and fill button'
     onclick : saveAndFillForm
 
+  container.appendChild messageArea = document.createElement('pre') <<<
+    innerHTML : 'This is the message area\n'
+
 saveForm = (cb)->
   values = {}
   allFields.forEach (f)-> values[f] = document.getElementById f .value
   values['Auto Submit'] = document.getElementById 'Auto Submit' .checked
   e <- chrome.storage.local.set values
   cb? e
+  messageArea.innerHTML += "Saved Successfully\n"
 
 saveAndFillForm = (cb)->
   saveForm cb

@@ -16,6 +16,17 @@
     "https://*.rhcloud.com/"
   ],
 
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*.rhcloud.com/",
+        "https://*.rhcloud.com/"
+      ],
+      "js": ["inject.js"],
+      "run_at": "document_end"
+    }
+  ],
+
   "browser_action": {
     "default_title": "popup",
     "default_icon": "icon_19.png",
