@@ -11,8 +11,14 @@
   "permissions": [
     "activeTab",
     "storage",
-    "tabs"
-  ]
+    "tabs",
+    "http://*.rhcloud.com/",
+    "https://*.rhcloud.com/"
+  ],
 
-      
+  "browser_action": {
+    "default_title": "popup",
+    "default_icon": "icon_19.png",
+    "default_popup": "popup.html"
+  }
 }
