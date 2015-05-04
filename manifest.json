@@ -22,7 +22,7 @@
         "http://*.rhcloud.com/",
         "https://*.rhcloud.com/"
       ],
-      "js": ["inject.js"],
+      "js": ["ocrad.js","inject.js"],
       "run_at": "document_end"
     }
   ],

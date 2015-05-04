@@ -23,7 +23,7 @@
     };
     messageArea = null;
     addForm = function(container){
-      var ref$, messageArea;
+      var ref$;
       makeFields().forEach(bind$(container, 'appendChild'));
       container.appendChild(makeField('Auto Submit', 'checkbox'));
       container.appendChild((ref$ = document.createElement('button'), ref$.innerHTML = 'Save', ref$.onclick = saveForm, ref$));
@@ -41,7 +41,7 @@
         if (typeof cb == 'function') {
           cb(e);
         }
-        return messageArea.innerHTML += "Saved Successfully\n";
+        return messageArea != null ? messageArea.innerHTML += "Saved Successfully\n" : void 8;
       });
     };
     saveAndFillForm = function(cb){

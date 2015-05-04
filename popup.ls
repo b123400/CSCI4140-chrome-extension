@@ -46,7 +46,7 @@ addForm = (container)->
     innerHTML : 'Save and fill button'
     onclick : saveAndFillForm
 
-  container.appendChild messageArea = document.createElement('pre') <<<
+  container.appendChild messageArea := document.createElement('pre') <<<
     innerHTML : 'This is the message area\n'
 
 saveForm = (cb)->
@@ -55,7 +55,7 @@ saveForm = (cb)->
   values['Auto Submit'] = document.getElementById 'Auto Submit' .checked
   e <- chrome.storage.local.set values
   cb? e
-  messageArea.innerHTML += "Saved Successfully\n"
+  messageArea?.innerHTML += "Saved Successfully\n"
 
 saveAndFillForm = (cb)->
   saveForm cb

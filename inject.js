@@ -2,8 +2,7 @@
 (function(){
   chrome.storage.local.get(null, function(storage){
     debugger;
-    var allFields, findAndFill, ref$, form, error;
-    allFields = ['Captcha Picture ID', 'Captcha Input Field ID'];
+    var findAndFill, autoSubmitForm, image, error;
     findAndFill = function(id, value){
       value == null && (value = '');
       return document.getElementById(storage[id]).value = storage[value];
@@ -11,13 +10,34 @@
     try {
       findAndFill('Login Name Field ID', 'Login Name Field Value');
       findAndFill('Password Field ID', 'Password Field Value');
-      if (storage['Auto Submit']) {
-        if ((ref$ = document.getElementsByClassName('alert alert-danger')) != null && ref$.length) {
-          alert('Auto login failed');
-          return;
+      autoSubmitForm = function(){
+        var ref$, form;
+        if (storage['Auto Submit']) {
+          if ((ref$ = document.getElementsByClassName('alert alert-danger')) != null && ref$.length) {
+            alert('Auto login failed');
+            return;
+          }
+          form = document.getElementById(storage['Form ID']);
+          return form.submit();
         }
-        form = document.getElementById(storage['Form ID']);
-        return form.submit();
+      };
+      try {
+        image = new Image();
+        image.src = document.getElementById(storage['Captcha Picture ID']).src;
+        return image.addEventListener('load', function(){
+          var canvas, imgDraw, string;
+          canvas = document.createElement('canvas');
+          canvas.height = image.height;
+          canvas.width = image.width;
+          imgDraw = canvas.getContext('2d');
+          imgDraw.drawImage(image, 0, 0);
+          string = OCRAD(imgDraw);
+          document.getElementById(storage['Captcha Input Field ID']).value = string;
+          return autoSubmitForm();
+        });
+      } catch (e$) {
+        error = e$;
+        return autoSubmitForm();
       }
     } catch (e$) {
       return error = e$;
