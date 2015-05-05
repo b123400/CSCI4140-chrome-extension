@@ -45,7 +45,18 @@
       });
     };
     saveAndFillForm = function(cb){
-      return saveForm(cb);
+      saveForm(cb);
+      return chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, function(tabs){
+        var ref$;
+        return chrome.tabs.sendMessage(tabs != null ? (ref$ = tabs[0]) != null ? ref$.id : void 8 : void 8, {
+          command: 'fill'
+        }, function(response){
+          return messageArea != null ? messageArea.innerHTML += "Filled in\n" : void 8;
+        });
+      });
     };
     return addForm(document.body);
   });

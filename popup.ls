@@ -59,5 +59,8 @@ saveForm = (cb)->
 
 saveAndFillForm = (cb)->
   saveForm cb
+  tabs <- chrome.tabs.query active: true, currentWindow: true
+  response <- chrome.tabs.sendMessage tabs?[0]?.id, command: 'fill'
+  messageArea?.innerHTML += "Filled in\n"
 
 addForm document.body
