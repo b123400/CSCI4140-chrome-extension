@@ -2,18 +2,27 @@
 (function(){
   chrome.storage.local.get(null, function(storage){
     debugger;
-    var findAndFill, autoSubmitForm, image, error;
-    findAndFill = function(id, value){
+    var findAndFill, isLoginOkPage, isLoginFailPage, autoSubmitForm, image, error;
+    findAndFill = curry$(function(id, value){
       value == null && (value = '');
       return document.getElementById(storage[id]).value = storage[value];
-    };
+    });
     try {
-      findAndFill('Login Name Field ID', 'Login Name Field Value');
-      findAndFill('Password Field ID', 'Password Field Value');
+      isLoginOkPage = function(){
+        var ref$;
+        return ((ref$ = document.getElementsByClassName('alert alert-success')) != null ? ref$.length : void 8) > 0;
+      };
+      isLoginFailPage = function(){
+        var ref$;
+        return ((ref$ = document.getElementsByClassName('alert alert-danger')) != null ? ref$.length : void 8) > 0;
+      };
       autoSubmitForm = function(){
-        var ref$, form;
+        var form;
         if (storage['Auto Submit']) {
-          if ((ref$ = document.getElementsByClassName('alert alert-danger')) != null && ref$.length) {
+          if (isLoginOkPage()) {
+            return;
+          }
+          if (isLoginFailPage()) {
             alert('Auto login failed');
             return;
           }
@@ -21,6 +30,8 @@
           return form.submit();
         }
       };
+      findAndFill('Login Name Field ID', 'Login Name Field Value');
+      findAndFill('Password Field ID', 'Password Field Value');
       try {
         image = new Image();
         image.src = document.getElementById(storage['Captcha Picture ID']).src;
@@ -43,4 +54,17 @@
       return error = e$;
     }
   });
+  function curry$(f, bound){
+    var context,
+    _curry = function(args) {
+      return f.length > 1 ? function(){
+        var params = args ? args.concat() : [];
+        context = bound ? context || this : this;
+        return params.push.apply(params, arguments) <
+            f.length && arguments.length ?
+          _curry.call(context, params) : f.apply(context, params);
+      } : f;
+    };
+    return _curry();
+  }
 }).call(this);
